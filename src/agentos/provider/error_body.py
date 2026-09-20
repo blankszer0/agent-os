@@ -137,6 +137,17 @@ def summarize_error_body(
         message = payload.get("message")
         if isinstance(message, str) and message.strip():
             return _clip(message.strip(), max_chars)
+            detail = payload.get("detail")
+        if isinstance(detail, str) and detail.strip():
+            return _clip(detail.strip(), max_chars)
+        if isinstance(detail, list):
+            msgs = [
+                item.get("msg", "")
+                for item in detail
+                if isinstance(item, dict) and isinstance(item.get("msg"), str) and item["msg"].strip()
+            ]
+            if msgs:
+                return _clip("; ".join(msgs), max_chars)
 
     if _looks_like_html(text):
         return _clip(_summarize_html(text), max_chars)
