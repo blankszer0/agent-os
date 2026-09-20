@@ -674,6 +674,8 @@ def chunk_text(
     Returns list of (start_line, end_line, chunk_text).
     CJK chars count as 1 token each; ASCII uses 4 chars per token.
     """
+    if not text.strip():
+        return []
     lines = text.splitlines(keepends=True)
     chunks: list[tuple[int, int, str]] = []
 
